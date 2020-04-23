@@ -19,6 +19,7 @@ router.post('/create', async (req, res) => {
   try {
     const body = await req.body;
     const invoiceNr = await req.body.invoiceNr;
+    console.log(invoiceNr);
     pdf.create(pdfTemplate(body)).toStream(async function(err, stream){
       stream.pipe(fs.createWriteStream(`${__dirname}/lasku_${invoiceNr}_${today()}.pdf`));
       await storage.bucket('ig-picker.appspot.com').upload(`${__dirname}/lasku_${invoiceNr}_${today()}.pdf`, {

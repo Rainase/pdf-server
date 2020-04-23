@@ -138,7 +138,7 @@ font-weight: 400;
         <div class="divTable minimalistBlack">
           <div class="divTableHeading">
           <div class="divTableRow">
-          <div class="divTableHead other-items">Nimike</div>
+          <div class="divTableHead other-items">Selite</div>
           <div class="divTableHead other-items">Määrä</div>
           <div class="divTableHead other-items">hinta</div>
           <div class="divTableHead other-items">Veroton</div>
