@@ -1,5 +1,5 @@
 let moment = require('moment');
-module.exports = ({ clientName, clientAddress, yTunnus, itemName,itemCount, itemPrice }) => {
+module.exports = ({ clientName, clientCity, clientPostcode, clientAddress, yTunnus, itemName,itemCount, itemPrice, invoiceNr}) => {
     const today = new Date();
     function addDays(today) {
        let newDate = moment(today).add(14, 'days')
@@ -16,6 +16,7 @@ return `
         body {
           font-family: itc-american-typewriter, serif;
           font-weight: 300;
+          font-size: .9em;
         }
         .invoice-container {
           max-width: 800px;
@@ -40,7 +41,7 @@ return `
           width: 150px;
         }
         .invoice-body {
-          margin: 60px 0;
+          margin: 60px 0 0 0;
         }
         div.minimalistBlack {
 width: 100%;
@@ -71,6 +72,26 @@ font-size: 14px;
 .minimalistBlack .tableFootStyle {
 font-size: 14px;
 }
+.subTotal {
+  margin-top: 0;
+  width: 300px;
+  float: right;
+}
+.invoice-top-container {
+  position: relative;
+  padding: 0 20px;
+  font-size: .8em;
+  border: dashed 1px #000000;
+}
+.footer-right-side {
+  float: right;
+  position: absolute;
+  padding: 0 10px;
+    top: 30%;
+    right: 0;
+    text-align: center;
+    border-left: 1px solid #000000;
+}
 /* DivTable.com */
 .divTable{ display: table; }
 .divTableRow { display: table-row; }
@@ -88,21 +109,29 @@ font-weight: 400;
    <body>
      <div class="invoice-container">
        <div class="invoice-header">
-         <img src="https://elustik.s3.eu-central-1.amazonaws.com/4b930cdc4cba43068f3d02c7ded659f5.png" >
-        <p style="font-size: 2em;">Lasku</p>
+         <div>
+           <img src="https://elustik.s3.eu-central-1.amazonaws.com/4b930cdc4cba43068f3d02c7ded659f5.png" >
+           <p style="font-size: 2em;">Lasku</p>
+           <div>Suitsikatu2B19</div>
+           <div>15830 Lahti</div>
+         </div>
        </div>
        <div class="invoice-sub-header">
          <div class="sub-header-left">
            <p style="font-size: 2em;">Ostaja</p>
            <p>${clientName}</p>
            <p>${clientAddress}</p>
+           <p>${clientCity}</p>
+           <p>${clientPostcode}</p>
            <p>y-tunnus: ${yTunnus}</p>
          </div>
          <div class="sub-header-right">
+           <br/><br/><br/><br/>
            <p><heed>Laskun pvm:</heed> ${moment().format('D/M/YYYY')}</p>
-           <p><heed>Laskun tunniste:</heed>1067</p>
            <p><heed>Maksuehto:</heed>14 pv</p>
            <p><heed>Eräpvm:</heed>${addDays()}</p>
+           <p><heed>Laskun nomero:</heed> ${invoiceNr}</p>
+           <p><heed>Viivästuskorko:</heed> 9,50 %</p>
          </div>
        </div>
        <div class="invoice-body">
@@ -114,8 +143,8 @@ font-weight: 400;
           <div class="divTableHead other-items">hinta</div>
           <div class="divTableHead other-items">Veroton</div>
           <div class="divTableHead other-items">ALV%</div>
-          <div class="divTableHead other-items">ALV EUR</div>
-          <div class="divTableHead other-items">Yhteensä EUR</div>
+          <div class="divTableHead other-items">ALV</div>
+          <div class="divTableHead other-items">Yhteensä</div>
           </div>
           </div>
           <div class="divTableBody">
@@ -123,10 +152,10 @@ font-weight: 400;
             <div class="divTableCell">${itemName}</div>
             <div class="divTableCell other-items">${itemCount}</div>
             <div class="divTableCell other-items">${itemPrice}</div>
-            <div class="divTableCell other-items">${itemCount * itemPrice}</div>
-            <div class="divTableCell other-items">0</div>
-            <div class="divTableCell other-items">0</div>
-            <div class="divTableCell other-items">${itemCount * itemPrice}</div>
+            <div class="divTableCell other-items">${itemCount * itemPrice} €</div>
+            <div class="divTableCell other-items">0%</div>
+            <div class="divTableCell other-items">0 €</div>
+            <div class="divTableCell other-items">${itemCount * itemPrice} €</div>
           </div>
           <div class="divTableRow">
             <div class="divTableCell"></div>
@@ -140,15 +169,47 @@ font-weight: 400;
           </div>
           <div class="divTableFoot tableFootStyle">
           <div class="divTableRow">
-          <div class="divTableCell" style="font-size: .5em;">Arvonlisäverolaki 8c § käännetty alv.</div>
           </div>
           </div>
           </div>
         </div>
-       </div>
+        <div style="position: relative; margin-bottom: 150px;">
+          <br>
+          <div class="invoice-body subTotal">
+            <div class="divTable minimalistBlack">
+              <div class="divTableHeading">
+              <div class="divTableRow">
+              <div class="divTableHead other-items">Laskun loppusumma:</div>
+              </div>
+              </div>
+              <div class="divTableBody">
+              <div class="divTableRow">
+                <div class="divTableCell" style="text-align: right;">${itemCount * itemPrice} €</div>
+              </div>
+              <div class="divTableRow">
+                <div class="divTableCell" style="text-align: right;">Arvolisäverolaki 8c § käänety alv &NoBreak; 0,00</div>
+                
+              </div>
+              </div>
+              </div>
+            </div>
+        </div>
        <div class="invoice-footer">
-        footer
+         <div class="invoice-top-container">
+          <div class="footer-left-side">
+            <p style="font-weight: 400;">Finnestar tmi</p>
+            <p>Y-tunnus: <small style="font-weight: 400;"><br>2339471-9</small></p>
+            <p>Saajan tilinomero: <small style="font-weight: 400;"><br>IBAN FI86 5722 0720 0616 19</small></p>
+            <p>Saaja: <small style="font-weight: 400;"><br>Finnestar, Suitsikatu2B19,15830 Lahti</small></p>
+          </div>
+          <div class="footer-right-side">
+            <p>Maksessasi laskun kirjaathan viestikenttään:</p>
+            <p>${invoiceNr}</p>
+          </div>
+        </div>
        </div>
+       </div>
+       
      </div>
 </html>
    `;
