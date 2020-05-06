@@ -22,7 +22,7 @@ router.post('/create', async (req, res) => {
     console.log(invoiceNr);
     pdf.create(pdfTemplate(body)).toStream(async function(err, stream){
       stream.pipe(fs.createWriteStream(`${__dirname}/lasku_${invoiceNr}_${today()}.pdf`));
-      await storage.bucket('finnestar').upload(`${__dirname}/lasku_${invoiceNr}_${today()}.pdf`, {
+      await storage.bucket('ig-picker.appspot.com').upload(`${__dirname}/lasku_${invoiceNr}_${today()}.pdf`, {
         gzip: true,
       });
       fs.unlink(`${__dirname}/lasku_${invoiceNr}_${today()}.pdf`, async function (err) {
@@ -40,7 +40,7 @@ router.post('/create', async (req, res) => {
 })
 
 router.get('/get', async (req, res) => {
-  const files = await storage.bucket('finnestar').getFiles()
+  const files = await storage.bucket('ig-picker.appspot.com').getFiles()
   res.send(files)
 })
 module.exports = router;
