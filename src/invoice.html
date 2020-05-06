@@ -1,11 +1,3 @@
-let moment = require('moment');
-module.exports = ({ clientName, clientCity, clientPostcode, clientAddress, yTunnus, itemName,itemCount, itemPrice, invoiceNr}) => {
-    const today = new Date();
-    function addDays(today) {
-       let newDate = moment(today).add(14, 'days')
-      return newDate.format('D/M/YYYY');
-    }
-return `
 <!doctype html>
 <html>
    <head>
@@ -228,5 +220,3 @@ font-weight: 400;
        
      </div>
 </html>
-   `;
-};
